@@ -14,6 +14,7 @@ public class Student {
   private Long id;
   private String firstName;
   private String lastName;
+  private Integer creditRating;
 
   public Long getId() {
     return id;
@@ -37,5 +38,13 @@ public class Student {
 
   public void setLastName(String lastName) {
     this.lastName = lastName;
+  }
+
+  public Integer getCreditRating() {
+    return creditRating;
+  }
+
+  public void setCreditRating(Integer creditRating) {
+    this.creditRating = creditRating;
   }
 }

@@ -1,5 +1,6 @@
 package com.beercitycode.tddaholic.studentenrollment.repository;
 
+import com.beercitycode.tddaholic.studentenrollment.fixtures.StudentFixture;
 import com.beercitycode.tddaholic.studentenrollment.model.Student;
 import java.util.List;
 import java.util.UUID;
@@ -9,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -19,7 +21,7 @@ public class StudentRepositoryTest {
   private StudentRepository repository;
 
   @Autowired
-  private JdbcTemplate jdbcTemplate;
+  private NamedParameterJdbcTemplate jdbcTemplate;
 
   @Test
   public void testFindStudentById() {
@@ -39,9 +41,10 @@ public class StudentRepositoryTest {
   /* ================================================================== */
 
   private Long createStudent() {
+
     Long id = -100L;
-    String updateQuery = String.format("insert into student (ID, FIRST_NAME, LAST_NAME) values ('%s', 'CARLUS', 'HENRY')", id);
-    jdbcTemplate.update(updateQuery);
+    Student student = StudentFixture.create(id);
+    StudentFixture.saveStudent(jdbcTemplate, student);
 
     return id;
   }
