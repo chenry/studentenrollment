@@ -23,26 +23,26 @@ public class StudentRepositoryTest {
 
   @Test
   public void testFindStudentById() {
-    Student student = repository.findStudentById(UUID.randomUUID());
+    Student student = repository.findById(-100L);
 
     Assert.assertNull(student);
   }
 
   @Test
   public void testFindStudentById_StudentExists() {
-    UUID studentId = createStudent();
+    Long studentId = createStudent();
 
-    Student student = repository.findStudentById(studentId);
+    Student student = repository.findById(studentId);
     Assert.assertNotNull(student);
   }
 
   /* ================================================================== */
 
-  private UUID createStudent() {
-    UUID uuid = UUID.randomUUID();
-    String updateQuery = String.format("insert into student (ID, FIRST_NAME, LAST_NAME) values ('%s', 'CARLUS', 'HENRY')", uuid.toString());
+  private Long createStudent() {
+    Long id = -100L;
+    String updateQuery = String.format("insert into student (ID, FIRST_NAME, LAST_NAME) values ('%s', 'CARLUS', 'HENRY')", id);
     jdbcTemplate.update(updateQuery);
 
-    return uuid;
+    return id;
   }
 }
