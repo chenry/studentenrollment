@@ -33,7 +33,7 @@ public class CourseRepositoryTest {
     }
 
     @Test
-    public void testFindId_RecordFound() {
+    public void testFindId_RecordFoundNoPrerequisites() {
         Long courseId = -100L;
         fixture.createAndPersistCourse(courseId);
 
@@ -41,6 +41,10 @@ public class CourseRepositoryTest {
         Assert.assertTrue(course.isPresent());
     }
 
-    
+    @Test
+    public void testFindById_RecordFoundMultiplePrerequisites() {
+        Assert.assertNull("");
+    }
+
 
 }
