@@ -1,6 +1,7 @@
 package com.beercitycode.tddaholic.studentenrollment.repository;
 
 import com.beercitycode.tddaholic.studentenrollment.fixtures.Fixture;
+import com.beercitycode.tddaholic.studentenrollment.model.Course;
 import com.beercitycode.tddaholic.studentenrollment.model.CoursePrerequisite;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,13 +13,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CoursePrerequisiteRepositoryTest {
+public class CourseRepositoryTest {
     @Autowired
-    private CoursePrerequisiteRepository repository;
+    private CourseRepository repository;
 
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
@@ -28,14 +27,20 @@ public class CoursePrerequisiteRepositoryTest {
 
     @Test
     public void testFindById_NoMatches() {
-        Optional<CoursePrerequisite> coursePrerequisite = repository.findById(-100L);
+        Optional<Course> course = repository.findById(-100L);
 
-        Assert.assertFalse(coursePrerequisite.isPresent());
+        Assert.assertFalse(course.isPresent());
     }
 
     @Test
     public void testFindId_RecordFound() {
+        Long courseId = -100L;
+        fixture.createAndPersistCourse(courseId);
 
+        Optional<Course> course = repository.findById(courseId);
+        Assert.assertTrue(course.isPresent());
     }
+
+    
 
 }

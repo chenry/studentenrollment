@@ -1,5 +1,6 @@
 package com.beercitycode.tddaholic.studentenrollment.fixtures;
 
+import com.beercitycode.tddaholic.studentenrollment.model.Course;
 import com.beercitycode.tddaholic.studentenrollment.model.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,4 +34,9 @@ public class Fixture {
         return student;
     }
 
+    public Course createAndPersistCourse(Long id) {
+        Course course = CourseFixture.create(id);
+        CourseFixture.saveCourse(jdbcTemplate, course);
+        return course;
+    }
 }
