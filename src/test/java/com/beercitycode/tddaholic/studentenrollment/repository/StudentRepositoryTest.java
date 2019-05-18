@@ -1,5 +1,6 @@
 package com.beercitycode.tddaholic.studentenrollment.repository;
 
+import com.beercitycode.tddaholic.studentenrollment.fixtures.Fixture;
 import com.beercitycode.tddaholic.studentenrollment.fixtures.StudentFixture;
 import com.beercitycode.tddaholic.studentenrollment.model.Student;
 import java.util.List;
@@ -23,6 +24,9 @@ public class StudentRepositoryTest {
   @Autowired
   private NamedParameterJdbcTemplate jdbcTemplate;
 
+  @Autowired
+  private Fixture fixture;
+
   @Test
   public void testFindStudentById() {
     Student student = repository.findById(-100L);
@@ -34,8 +38,11 @@ public class StudentRepositoryTest {
   public void testFindStudentById_StudentExists() {
     Long studentId = createStudent();
 
+    fixture.showRecords("student");
+
     Student student = repository.findById(studentId);
     Assert.assertNotNull(student);
+
   }
 
   /* ================================================================== */
