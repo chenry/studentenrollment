@@ -12,9 +12,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StudentRepository extends CrudRepository<Student, UUID> {
-
-  public Student findById(Long id);
-
+public interface StudentRepository extends CrudRepository<Student, Long> {
 
 }

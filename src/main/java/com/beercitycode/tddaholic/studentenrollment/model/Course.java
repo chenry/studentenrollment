@@ -1,9 +1,7 @@
 package com.beercitycode.tddaholic.studentenrollment.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Course {
@@ -14,6 +12,17 @@ public class Course {
   private String courseName;
   private String description;
   private Integer classSizeLimit;
+
+  @OneToMany(mappedBy = "course")
+  private List<CoursePrerequisite> coursePrerequisiteList;
+
+  public List<CoursePrerequisite> getCoursePrerequisiteList() {
+    return coursePrerequisiteList;
+  }
+
+  public void setCoursePrerequisiteList(List<CoursePrerequisite> coursePrerequisiteList) {
+    this.coursePrerequisiteList = coursePrerequisiteList;
+  }
 
   public Long getId() {
     return id;

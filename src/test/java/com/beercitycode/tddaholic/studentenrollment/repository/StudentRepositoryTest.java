@@ -4,6 +4,7 @@ import com.beercitycode.tddaholic.studentenrollment.fixtures.Fixture;
 import com.beercitycode.tddaholic.studentenrollment.fixtures.StudentFixture;
 import com.beercitycode.tddaholic.studentenrollment.model.Student;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,9 +30,10 @@ public class StudentRepositoryTest {
 
   @Test
   public void testFindStudentById() {
-    Student student = repository.findById(-100L);
+    Optional<Student> student = null;
+    student = repository.findById(-100L);
 
-    Assert.assertNull(student);
+    Assert.assertFalse(student.isPresent());
   }
 
   @Test
@@ -40,8 +42,8 @@ public class StudentRepositoryTest {
     fixture.createAndPersistStudent(studentId);
     fixture.showRecords("student");
 
-    Student student = repository.findById(studentId);
-    Assert.assertNotNull(student);
+    Optional<Student> student = repository.findById(studentId);
+    Assert.assertTrue(student.isPresent());
 
   }
 
