@@ -36,8 +36,8 @@ public class StudentRepositoryTest {
 
   @Test
   public void testFindStudentById_StudentExists() {
-    Long studentId = createStudent();
-
+    Long studentId = -100L;
+    fixture.createAndPersistStudent(studentId);
     fixture.showRecords("student");
 
     Student student = repository.findById(studentId);
@@ -47,12 +47,4 @@ public class StudentRepositoryTest {
 
   /* ================================================================== */
 
-  private Long createStudent() {
-
-    Long id = -100L;
-    Student student = StudentFixture.create(id);
-    StudentFixture.saveStudent(jdbcTemplate, student);
-
-    return id;
-  }
 }

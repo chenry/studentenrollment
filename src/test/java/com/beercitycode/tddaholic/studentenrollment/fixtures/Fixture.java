@@ -1,5 +1,6 @@
 package com.beercitycode.tddaholic.studentenrollment.fixtures;
 
+import com.beercitycode.tddaholic.studentenrollment.model.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,4 +26,11 @@ public class Fixture {
             logger.info("\t" + currRecord);
         }
     }
+
+    public Student createAndPersistStudent(Long id) {
+        Student student = StudentFixture.create(id);
+        StudentFixture.saveStudent(jdbcTemplate, student);
+        return student;
+    }
+
 }
