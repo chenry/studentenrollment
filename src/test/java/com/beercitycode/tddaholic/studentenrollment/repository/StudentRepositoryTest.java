@@ -1,29 +1,24 @@
 package com.beercitycode.tddaholic.studentenrollment.repository;
 
 import com.beercitycode.tddaholic.studentenrollment.fixtures.Fixture;
-import com.beercitycode.tddaholic.studentenrollment.fixtures.StudentFixture;
 import com.beercitycode.tddaholic.studentenrollment.model.Student;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.transaction.Transactional;
+import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 public class StudentRepositoryTest {
 
   @Autowired
   private StudentRepository repository;
-
-  @Autowired
-  private NamedParameterJdbcTemplate jdbcTemplate;
 
   @Autowired
   private Fixture fixture;

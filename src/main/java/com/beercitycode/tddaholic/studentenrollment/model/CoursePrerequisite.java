@@ -13,7 +13,17 @@ public class CoursePrerequisite {
   @JoinColumn(name = "course_id")
   private Course course;
 
-  private Long prereqCourseId;
+  @ManyToOne
+  @JoinColumn(name = "PREREQ_COURSE_ID")
+  private Course prereqCourse;
+
+  public Course getPrereqCourse() {
+    return prereqCourse;
+  }
+
+  public void setPrereqCourse(Course prereqCourse) {
+    this.prereqCourse = prereqCourse;
+  }
 
   public Course getCourse() {
     return course;
@@ -31,11 +41,4 @@ public class CoursePrerequisite {
     this.id = id;
   }
 
-  public Long getPrereqCourseId() {
-    return prereqCourseId;
-  }
-
-  public void setPrereqCourseId(Long prereqCourseId) {
-    this.prereqCourseId = prereqCourseId;
-  }
 }

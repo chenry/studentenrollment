@@ -1,9 +1,6 @@
 package com.beercitycode.tddaholic.studentenrollment.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Enrollment {
@@ -11,8 +8,14 @@ public class Enrollment {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
-  private Long studentId;
-  private Long courseId;
+
+  @OneToOne
+  @JoinColumn(name = "student_id")
+  private Student student;
+
+  @OneToOne
+  @JoinColumn(name = "course_id")
+  private Course course;
 
   public Long getId() {
     return id;
@@ -22,19 +25,19 @@ public class Enrollment {
     this.id = id;
   }
 
-  public Long getStudentId() {
-    return studentId;
+  public Student getStudent() {
+    return student;
   }
 
-  public void setStudentId(Long studentId) {
-    this.studentId = studentId;
+  public void setStudent(Student student) {
+    this.student = student;
   }
 
-  public Long getCourseId() {
-    return courseId;
+  public Course getCourse() {
+    return course;
   }
 
-  public void setCourseId(Long courseId) {
-    this.courseId = courseId;
+  public void setCourse(Course course) {
+    this.course = course;
   }
 }
