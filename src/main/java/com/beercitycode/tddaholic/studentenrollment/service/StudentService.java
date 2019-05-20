@@ -18,4 +18,10 @@ public class StudentService {
   public Optional<Student> findStudent(Long id) {
     return studentRepository.findById(id);
   }
+
+  public boolean hasGoodCredit(Student persistedStudent) {
+    int creditRating = (persistedStudent.getCreditRating() == null) ? 0 : persistedStudent.getCreditRating();
+
+    return creditRating >= 80;
+  }
 }

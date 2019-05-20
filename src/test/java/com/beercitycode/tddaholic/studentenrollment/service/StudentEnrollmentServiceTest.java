@@ -1,7 +1,11 @@
 package com.beercitycode.tddaholic.studentenrollment.service;
 
+import com.beercitycode.tddaholic.studentenrollment.exception.CourseIsAtCapacityException;
+import com.beercitycode.tddaholic.studentenrollment.exception.CourseNotFoundException;
+import com.beercitycode.tddaholic.studentenrollment.exception.StudentHasBadCreditException;
 import com.beercitycode.tddaholic.studentenrollment.exception.StudentNotFoundException;
 import com.beercitycode.tddaholic.studentenrollment.fixtures.CourseFixture;
+import com.beercitycode.tddaholic.studentenrollment.fixtures.Fixture;
 import com.beercitycode.tddaholic.studentenrollment.fixtures.StudentFixture;
 import com.beercitycode.tddaholic.studentenrollment.model.Course;
 import com.beercitycode.tddaholic.studentenrollment.model.Student;
@@ -20,6 +24,9 @@ public class StudentEnrollmentServiceTest {
 
   @Autowired
   private StudentEnrollmentService service;
+
+  @Autowired
+  private Fixture fixture;
 
   /**
    * Scenario: Unknown Student wants to enroll in a course
@@ -48,6 +55,40 @@ public class StudentEnrollmentServiceTest {
    * When that student enrolls in the course
    * Then they should not be able to enroll since they have bad credit
    */
+  @Test
+  public void testEnrollStudentInCourse_StudentHasBadCredit() {
+    Student student = fixture.createAndPersistStudent(20);
+    Course course = CourseFixture.create(-100L);
+
+    try {
+      service.enrollStudentInCourse(student, course);
+      Assert.fail("Should have thrown exception");
+    } catch (StudentHasBadCreditException ex) {
+
+    }
+  }
+
+  /**
+   * Scenario: Student with bad credit wants to enroll in a course that doesn't exist
+   *
+   * Given a student
+   * And the course does not exist
+   * When that student enrolls in the course
+   * Then they should not be able to enroll since the course does not exist
+   */
+  @Test
+  public void testEnrollStudentInCourse_CourseDoesNotExist() {
+    Student student = fixture.createAndPersistStudent();
+    Course course = CourseFixture.create(-100L);
+
+    try {
+      service.enrollStudentInCourse(student, course);
+      Assert.fail("Should have thrown exception");
+    } catch (CourseNotFoundException ex) {
+
+    }
+  }
+
 
   /**
    * Scenario: Student wants to enroll in a full course
@@ -57,6 +98,28 @@ public class StudentEnrollmentServiceTest {
    * When that student enrolls in the course
    * Then they should not be allowed to enroll in the course
    */
+  @Test
+  public void testEnrollStudentInCourse_CourseIsFull() {
+    Student enrolledStudent1 = fixture.createAndPersistStudent();
+    Student enrolledStudent2 = fixture.createAndPersistStudent();
+    Student enrolledStudent3 = fixture.createAndPersistStudent();
+
+    Course course = fixture.createAndPersistCourse(3);
+
+    fixture.createAndPersistEnrollment(enrolledStudent1, course);
+    fixture.createAndPersistEnrollment(enrolledStudent2, course);
+    fixture.createAndPersistEnrollment(enrolledStudent3, course);
+
+    Student student = fixture.createAndPersistStudent();
+
+    try {
+      service.enrollStudentInCourse(student, course);
+      Assert.fail("Should have thrown exception");
+    } catch (CourseIsAtCapacityException ex) {
+
+    }
+  }
+
 
   /**
    * Scenario: Student wants to enroll in a course, but does not have the prerequisites

@@ -37,14 +37,34 @@ public class Fixture {
         }
     }
 
+    public Student createAndPersistStudent() {
+        return createAndPersistStudent(getNextId());
+    }
+
+    public Student createAndPersistStudent(int creditRating) {
+        return createAndPersistStudent(getNextId(), creditRating);
+    }
+
     public Student createAndPersistStudent(Long id) {
+        return createAndPersistStudent(id, 100);
+    }
+    public Student createAndPersistStudent(Long id, int creditRating) {
         Student student = StudentFixture.create(id);
+        student.setCreditRating(creditRating);
         StudentFixture.saveStudent(jdbcTemplate, student);
         return student;
     }
 
-    public Course createAndPersistCourse(Long id) {
+    public Course createAndPersistCourse() {
+        return createAndPersistCourse(getNextId(), 100);
+    }
+
+    public Course createAndPersistCourse(int classSizeLimit) {
+        return createAndPersistCourse(getNextId(), classSizeLimit);
+    }
+    public Course createAndPersistCourse(Long id, int classSizeLimit) {
         Course course = CourseFixture.create(id);
+        course.setClassSizeLimit(classSizeLimit);
         CourseFixture.saveCourse(jdbcTemplate, course);
         return course;
     }
@@ -61,9 +81,14 @@ public class Fixture {
 
     }
 
+    public Enrollment createAndPersistEnrollment(Student student, Course course) {
+        return createAndPersistEnrollment(getNextId(), student, course);
+    }
+
     public Enrollment createAndPersistEnrollment(Long enrollmentId, Student student, Course course) {
         Enrollment enrollment = EnrollmentFixture.create(enrollmentId, student, course);
         EnrollmentFixture.saveEnrollment(jdbcTemplate, enrollment);
         return enrollment;
     }
+
 }

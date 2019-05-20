@@ -33,10 +33,9 @@ public class CourseRepositoryTest {
 
     @Test
     public void testFindId_RecordFoundNoPrerequisites() {
-        Long courseId = -100L;
-        fixture.createAndPersistCourse(courseId);
+        Course persistedCourse = fixture.createAndPersistCourse();
 
-        Optional<Course> course = repository.findById(courseId);
+        Optional<Course> course = repository.findById(persistedCourse.getId());
         Assert.assertTrue(course.isPresent());
         Assert.assertEquals(0, course.get().getCoursePrerequisiteList().size());
     }
@@ -44,9 +43,9 @@ public class CourseRepositoryTest {
     @Test
     public void testFindById_RecordFoundMultiplePrerequisites() {
 
-        Course course1 = fixture.createAndPersistCourse(-100L);
-        Course course2 = fixture.createAndPersistCourse(-200L);
-        Course course3 = fixture.createAndPersistCourse(-300L);
+        Course course1 = fixture.createAndPersistCourse();
+        Course course2 = fixture.createAndPersistCourse();
+        Course course3 = fixture.createAndPersistCourse();
 
         fixture.showRecords("course");
 
