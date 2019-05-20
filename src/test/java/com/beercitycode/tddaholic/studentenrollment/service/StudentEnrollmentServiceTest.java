@@ -9,10 +9,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public class StudentServiceTest {
+public class StudentEnrollmentServiceTest {
 
   @Autowired
-  private StudentService service;
+  private StudentEnrollmentService service;
 
   /**
    * Scenario: Unknown Student wants to enroll in a class
