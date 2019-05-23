@@ -28,6 +28,12 @@ public class Fixture {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 
+    public void showRecords(String... tableNames) {
+        for (String currTableName : tableNames) {
+            showRecords(currTableName);
+        }
+    }
+
     public void showRecords(String tableName) {
         List<Map<String, Object>> records = jdbcTemplate.queryForList("select * from " + tableName, new HashMap<>());
 
@@ -37,14 +43,34 @@ public class Fixture {
         }
     }
 
+    public Student createAndPersistStudent() {
+        return createAndPersistStudent(getNextId());
+    }
+
+    public Student createAndPersistStudent(int creditRating) {
+        return createAndPersistStudent(getNextId(), creditRating);
+    }
+
     public Student createAndPersistStudent(Long id) {
+        return createAndPersistStudent(id, 100);
+    }
+    public Student createAndPersistStudent(Long id, int creditRating) {
         Student student = StudentFixture.create(id);
+        student.setCreditRating(creditRating);
         StudentFixture.saveStudent(jdbcTemplate, student);
         return student;
     }
 
-    public Course createAndPersistCourse(Long id) {
+    public Course createAndPersistCourse() {
+        return createAndPersistCourse(getNextId(), 100);
+    }
+
+    public Course createAndPersistCourse(int classSizeLimit) {
+        return createAndPersistCourse(getNextId(), classSizeLimit);
+    }
+    public Course createAndPersistCourse(Long id, int classSizeLimit) {
         Course course = CourseFixture.create(id);
+        course.setClassSizeLimit(classSizeLimit);
         CourseFixture.saveCourse(jdbcTemplate, course);
         return course;
     }
@@ -61,9 +87,22 @@ public class Fixture {
 
     }
 
+    public Enrollment createAndPersistEnrollment(Student student, Course course) {
+        return createAndPersistEnrollment(getNextId(), student, course, false);
+    }
+
+    public Enrollment createAndPersistEnrollment(Student student, Course course, boolean isComplete) {
+        return createAndPersistEnrollment(getNextId(), student, course, isComplete);
+    }
+
     public Enrollment createAndPersistEnrollment(Long enrollmentId, Student student, Course course) {
-        Enrollment enrollment = EnrollmentFixture.create(enrollmentId, student, course);
+        return createAndPersistEnrollment(enrollmentId, student, course, false);
+    }
+
+    public Enrollment createAndPersistEnrollment(Long enrollmentId, Student student, Course course, boolean isComplete) {
+        Enrollment enrollment = EnrollmentFixture.create(enrollmentId, student, course, isComplete);
         EnrollmentFixture.saveEnrollment(jdbcTemplate, enrollment);
         return enrollment;
     }
+
 }

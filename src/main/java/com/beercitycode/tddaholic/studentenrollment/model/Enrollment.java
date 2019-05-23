@@ -6,7 +6,8 @@ import javax.persistence.*;
 public class Enrollment {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "enrollment_seq_generator")
+  @SequenceGenerator(name="enrollment_seq_generator", sequenceName = "enrollment_seq")
   private Long id;
 
   @OneToOne
@@ -16,6 +17,16 @@ public class Enrollment {
   @OneToOne
   @JoinColumn(name = "course_id")
   private Course course;
+
+  private Boolean isCompleted;
+
+  public Boolean getCompleted() {
+    return isCompleted;
+  }
+
+  public void setCompleted(Boolean completed) {
+    isCompleted = completed;
+  }
 
   public Long getId() {
     return id;

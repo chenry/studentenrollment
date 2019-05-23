@@ -37,8 +37,8 @@ public class EnrollmentRepositoryTest {
     public void testFindById_Found() {
         Long enrollmentId = -100L;
 
-        Student student = fixture.createAndPersistStudent(Fixture.getNextId());
-        Course course = fixture.createAndPersistCourse(Fixture.getNextId());
+        Student student = fixture.createAndPersistStudent(fixture.getNextId());
+        Course course = fixture.createAndPersistCourse();
 
         fixture.createAndPersistEnrollment(enrollmentId, student, course);
         Optional<Enrollment> persistedEnrollment = repository.findById(enrollmentId);
