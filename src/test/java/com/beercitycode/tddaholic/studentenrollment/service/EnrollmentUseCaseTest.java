@@ -23,10 +23,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public class StudentEnrollmentServiceTest {
+public class EnrollmentUseCaseTest {
 
     @Autowired
-    private StudentEnrollmentService service;
+    private EnrollmentUseCase service;
 
     @Autowired
     private Fixture fixture;
