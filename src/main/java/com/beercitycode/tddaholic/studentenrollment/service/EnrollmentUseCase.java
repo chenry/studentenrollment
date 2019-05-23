@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 @Service
-public class StudentEnrollmentService {
+public class EnrollmentUseCase {
 
     @Autowired
     private StudentService studentService;
