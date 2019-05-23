@@ -11,17 +11,18 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class StudentService {
 
-  @Autowired
-  private StudentRepository studentRepository;
+    @Autowired
+    private StudentRepository studentRepository;
 
 
-  public Optional<Student> findStudent(Long id) {
-    return studentRepository.findById(id);
-  }
+    public Optional<Student> findStudent(Long id) {
+        return studentRepository.findById(id);
+    }
 
-  public boolean hasGoodCredit(Student persistedStudent) {
-    int creditRating = (persistedStudent.getCreditRating() == null) ? 0 : persistedStudent.getCreditRating();
+    public boolean hasGoodCredit(Student persistedStudent) {
+        int creditRating =
+            (persistedStudent.getCreditRating() == null) ? 0 : persistedStudent.getCreditRating();
 
-    return creditRating >= 80;
-  }
+        return creditRating >= 80;
+    }
 }

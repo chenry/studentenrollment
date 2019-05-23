@@ -20,11 +20,11 @@ public class StudentFixture {
     public static void saveStudent(NamedParameterJdbcTemplate jdbcTemplate, Student student) {
         //@formatter:off
         String updateQuery =
-                "insert into student " +
-                        "(ID, FIRST_NAME, LAST_NAME, " +
-                        "CREDIT_RATING) " +
-                        "values (:id, :firstName, :lastName, " +
-                        ":creditRating)";
+            "insert into student " +
+                "(ID, FIRST_NAME, LAST_NAME, " +
+                "CREDIT_RATING) " +
+                "values (:id, :firstName, :lastName, " +
+                ":creditRating)";
 
         //@formatter:on
 

@@ -21,12 +21,12 @@ public class CourseFixture {
     public static void saveCourse(NamedParameterJdbcTemplate jdbcTemplate, Course course) {
         //@formatter:off
         String updateQuery =
-                "insert into course " +
-                        "(id, course_name, description, " +
-                        "class_size_limit) " +
-                        "values " +
-                        "(:id, :courseName, :description, " +
-                        ":classSizeLimit)";
+            "insert into course " +
+                "(id, course_name, description, " +
+                "class_size_limit) " +
+                "values " +
+                "(:id, :courseName, :description, " +
+                ":classSizeLimit)";
         //@formatter:on
 
         BeanPropertySqlParameterSource bpsps = new BeanPropertySqlParameterSource(course);

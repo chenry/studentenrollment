@@ -3,10 +3,9 @@ package com.beercitycode.tddaholic.studentenrollment.fixtures;
 import com.beercitycode.tddaholic.studentenrollment.model.Course;
 import com.beercitycode.tddaholic.studentenrollment.model.Enrollment;
 import com.beercitycode.tddaholic.studentenrollment.model.Student;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public class EnrollmentFixture {
 
@@ -24,13 +23,14 @@ public class EnrollmentFixture {
         return enrollment;
     }
 
-    public static void saveEnrollment(NamedParameterJdbcTemplate jdbcTemplate, Enrollment enrollment) {
+    public static void saveEnrollment(NamedParameterJdbcTemplate jdbcTemplate,
+        Enrollment enrollment) {
         //@formatter:off
         String updateQuery =
-                "insert into enrollment " +
-                        "(ID, STUDENT_ID, COURSE_ID, "
-                    + "IS_COMPLETED) " +
-                        "values (:id, :studentId, :courseId, :isCompleted)";
+            "insert into enrollment " +
+                "(ID, STUDENT_ID, COURSE_ID, "
+                + "IS_COMPLETED) " +
+                "values (:id, :studentId, :courseId, :isCompleted)";
 
         //@formatter:on
         Map<String, Object> map = new HashMap<>();

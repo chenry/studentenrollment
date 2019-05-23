@@ -4,15 +4,14 @@ import com.beercitycode.tddaholic.studentenrollment.fixtures.Fixture;
 import com.beercitycode.tddaholic.studentenrollment.model.Course;
 import com.beercitycode.tddaholic.studentenrollment.model.Enrollment;
 import com.beercitycode.tddaholic.studentenrollment.model.Student;
+import java.util.Optional;
+import javax.transaction.Transactional;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import javax.transaction.Transactional;
-import java.util.Optional;
 
 
 @RunWith(SpringRunner.class)
@@ -47,7 +46,6 @@ public class EnrollmentRepositoryTest {
         Assert.assertEquals(student.getId(), persistedEnrollment.get().getStudent().getId());
         Assert.assertEquals(course.getId(), persistedEnrollment.get().getCourse().getId());
     }
-
 
 
 }

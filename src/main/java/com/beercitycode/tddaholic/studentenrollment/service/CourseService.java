@@ -4,10 +4,9 @@ import com.beercitycode.tddaholic.studentenrollment.model.Course;
 import com.beercitycode.tddaholic.studentenrollment.repository.CourseRepository;
 import com.beercitycode.tddaholic.studentenrollment.repository.EnrollmentRepository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class CourseService {
