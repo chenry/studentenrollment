@@ -28,6 +28,12 @@ public class Fixture {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 
+    public void showRecords(String... tableNames) {
+        for (String currTableName : tableNames) {
+            showRecords(currTableName);
+        }
+    }
+
     public void showRecords(String tableName) {
         List<Map<String, Object>> records = jdbcTemplate.queryForList("select * from " + tableName, new HashMap<>());
 
@@ -82,11 +88,19 @@ public class Fixture {
     }
 
     public Enrollment createAndPersistEnrollment(Student student, Course course) {
-        return createAndPersistEnrollment(getNextId(), student, course);
+        return createAndPersistEnrollment(getNextId(), student, course, false);
+    }
+
+    public Enrollment createAndPersistEnrollment(Student student, Course course, boolean isComplete) {
+        return createAndPersistEnrollment(getNextId(), student, course, isComplete);
     }
 
     public Enrollment createAndPersistEnrollment(Long enrollmentId, Student student, Course course) {
-        Enrollment enrollment = EnrollmentFixture.create(enrollmentId, student, course);
+        return createAndPersistEnrollment(enrollmentId, student, course, false);
+    }
+
+    public Enrollment createAndPersistEnrollment(Long enrollmentId, Student student, Course course, boolean isComplete) {
+        Enrollment enrollment = EnrollmentFixture.create(enrollmentId, student, course, isComplete);
         EnrollmentFixture.saveEnrollment(jdbcTemplate, enrollment);
         return enrollment;
     }

@@ -2,6 +2,7 @@ package com.beercitycode.tddaholic.studentenrollment.service;
 
 import com.beercitycode.tddaholic.studentenrollment.exception.CourseIsAtCapacityException;
 import com.beercitycode.tddaholic.studentenrollment.exception.CourseNotFoundException;
+import com.beercitycode.tddaholic.studentenrollment.exception.StudentDidNotCompletePrerequisitesException;
 import com.beercitycode.tddaholic.studentenrollment.exception.StudentHasBadCreditException;
 import com.beercitycode.tddaholic.studentenrollment.exception.StudentNotFoundException;
 import com.beercitycode.tddaholic.studentenrollment.fixtures.CourseFixture;
@@ -9,12 +10,15 @@ import com.beercitycode.tddaholic.studentenrollment.fixtures.Fixture;
 import com.beercitycode.tddaholic.studentenrollment.fixtures.StudentFixture;
 import com.beercitycode.tddaholic.studentenrollment.model.Course;
 import com.beercitycode.tddaholic.studentenrollment.model.Student;
+import java.util.Arrays;
+import java.util.HashMap;
 import javax.transaction.Transactional;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -27,6 +31,9 @@ public class StudentEnrollmentServiceTest {
 
   @Autowired
   private Fixture fixture;
+
+  @Autowired
+  private NamedParameterJdbcTemplate jdbcTemplate;
 
   /**
    * Scenario: Unknown Student wants to enroll in a course
@@ -126,18 +133,101 @@ public class StudentEnrollmentServiceTest {
    *
    * Given a student with good credit
    * And the course that they want to enroll in has openings
-   * And the student has not fulfilled all of the prerequisites
+   * And the course has two pre-requisite classes
+   * And the student has not fulfilled any of the prerequisites
    * When that student enrolls in the course
    * Then they should not be allowed to enroll in the course
    */
+  @Test
+  public void testEnrollStudentInCourse_StudentDoesNotHavePrerequisites() {
+    Course course = fixture.createAndPersistCourse();
+    Course prereq1 = fixture.createAndPersistCourse();
+    Course prereq2 = fixture.createAndPersistCourse();
+
+    fixture.createAndPersistPrerequisitesForGiven(course, Arrays.asList(prereq1, prereq2));
+    Student student = fixture.createAndPersistStudent();
+
+    try {
+      service.enrollStudentInCourse(student, course);
+      Assert.fail("Should have thrown an exception");
+    } catch (StudentDidNotCompletePrerequisitesException e) {
+
+    }
+
+  }
+
+  /**
+   * Scenario: Student wants to enroll in a course, but does not have the prerequisites
+   *
+   * Given a student with good credit
+   * And the course that they want to enroll in has openings
+   * And the course has two pre-requisite classes
+   * And the student has only fulfilled one prerequisite
+   * When that student enrolls in the course
+   * Then they should not be allowed to enroll in the course
+   */
+  @Test
+  public void testEnrollStudentInCourse_StudentCompletedOneOfTwoPrerequisites() {
+    Course course = fixture.createAndPersistCourse();
+    Course prereq1 = fixture.createAndPersistCourse();
+    Course prereq2 = fixture.createAndPersistCourse();
+
+    fixture.createAndPersistPrerequisitesForGiven(course, Arrays.asList(prereq1, prereq2));
+    Student student = fixture.createAndPersistStudent();
+    fixture.createAndPersistEnrollment(student, prereq1, true);
+
+    try {
+      service.enrollStudentInCourse(student, course);
+      Assert.fail("Should have thrown an exception");
+    } catch (StudentDidNotCompletePrerequisitesException e) {
+
+    }
+
+  }
 
   /**
    * Scenario: Happy Case
    *
    * Given a student with good credit
    * And the course that they want to enroll in has openings
-   * And the student has fulfilled all of the prerequisites
+   * And the course has two pre-requisite classes
+   * And the student has fulfilled all prerequisites
    * When that student enrolls in the course
    * Then they should be allowed to enroll in the course
    */
+  @Test
+  public void testEnrollStudentInCourse_HappyCase() {
+    Course course = fixture.createAndPersistCourse();
+    Course prereq1 = fixture.createAndPersistCourse();
+    Course prereq2 = fixture.createAndPersistCourse();
+
+    fixture.createAndPersistPrerequisitesForGiven(course, Arrays.asList(prereq1, prereq2));
+    Student student = fixture.createAndPersistStudent();
+
+    fixture.createAndPersistEnrollment(student, prereq1, true);
+    fixture.createAndPersistEnrollment(student, prereq2, true);
+
+    fixture.showRecords("enrollment");
+
+    service.enrollStudentInCourse(student, course);
+
+    fixture.showRecords("enrollment");
+
+    verifyStudentIsEnrolledInCourse(student, course);
+
+  }
+
+  /* ============================================================================= */
+
+  private void verifyStudentIsEnrolledInCourse(Student student, Course course) {
+
+    String query = "select count(*) from enrollment where student_id = :studentId and course_id = :courseId";
+    HashMap<String, Object> params = new HashMap<>();
+    params.put("studentId", student.getId());
+    params.put("courseId", course.getId());
+    Integer count = jdbcTemplate.queryForObject(query, params, Integer.class);
+
+    Assert.assertEquals(Integer.valueOf(1), count);
+  }
+
 }
