@@ -4,29 +4,28 @@ import com.beercitycode.tddaholic.studentenrollment.model.Course;
 import com.beercitycode.tddaholic.studentenrollment.model.CoursePrerequisite;
 import com.beercitycode.tddaholic.studentenrollment.model.Enrollment;
 import com.beercitycode.tddaholic.studentenrollment.model.Student;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
-
 @Component
 public class Fixture {
+
     private static final Logger logger = LoggerFactory.getLogger(Fixture.class);
     private static AtomicLong id = new AtomicLong(0);
+    @Autowired
+    private NamedParameterJdbcTemplate jdbcTemplate;
 
     public static Long getNextId() {
         return id.incrementAndGet();
     }
-
-    @Autowired
-    private NamedParameterJdbcTemplate jdbcTemplate;
 
     public void showRecords(String... tableNames) {
         for (String currTableName : tableNames) {
@@ -35,7 +34,8 @@ public class Fixture {
     }
 
     public void showRecords(String tableName) {
-        List<Map<String, Object>> records = jdbcTemplate.queryForList("select * from " + tableName, new HashMap<>());
+        List<Map<String, Object>> records = jdbcTemplate
+            .queryForList("select * from " + tableName, new HashMap<>());
 
         logger.info(String.format("[%s] record count: %d", tableName, records.size()));
         for (Map<String, Object> currRecord : records) {
@@ -54,6 +54,7 @@ public class Fixture {
     public Student createAndPersistStudent(Long id) {
         return createAndPersistStudent(id, 100);
     }
+
     public Student createAndPersistStudent(Long id, int creditRating) {
         Student student = StudentFixture.create(id);
         student.setCreditRating(creditRating);
@@ -68,6 +69,7 @@ public class Fixture {
     public Course createAndPersistCourse(int classSizeLimit) {
         return createAndPersistCourse(getNextId(), classSizeLimit);
     }
+
     public Course createAndPersistCourse(Long id, int classSizeLimit) {
         Course course = CourseFixture.create(id);
         course.setClassSizeLimit(classSizeLimit);
@@ -75,12 +77,14 @@ public class Fixture {
         return course;
     }
 
-    public void createAndPersistPrerequisitesForGiven(Course givenCourse, List<Course> prereqCourses) {
+    public void createAndPersistPrerequisitesForGiven(Course givenCourse,
+        List<Course> prereqCourses) {
 
         List<CoursePrerequisite> coursePrerequisites = new ArrayList<CoursePrerequisite>();
 
         for (Course currPrereqCourse : prereqCourses) {
-            CoursePrerequisite coursePrerequisite = CoursePrerequisiteFixture.create(getNextId(), givenCourse, currPrereqCourse);
+            CoursePrerequisite coursePrerequisite = CoursePrerequisiteFixture
+                .create(getNextId(), givenCourse, currPrereqCourse);
             CoursePrerequisiteFixture.saveCoursePrerequisite(jdbcTemplate, coursePrerequisite);
         }
 
@@ -91,15 +95,18 @@ public class Fixture {
         return createAndPersistEnrollment(getNextId(), student, course, false);
     }
 
-    public Enrollment createAndPersistEnrollment(Student student, Course course, boolean isComplete) {
+    public Enrollment createAndPersistEnrollment(Student student, Course course,
+        boolean isComplete) {
         return createAndPersistEnrollment(getNextId(), student, course, isComplete);
     }
 
-    public Enrollment createAndPersistEnrollment(Long enrollmentId, Student student, Course course) {
+    public Enrollment createAndPersistEnrollment(Long enrollmentId, Student student,
+        Course course) {
         return createAndPersistEnrollment(enrollmentId, student, course, false);
     }
 
-    public Enrollment createAndPersistEnrollment(Long enrollmentId, Student student, Course course, boolean isComplete) {
+    public Enrollment createAndPersistEnrollment(Long enrollmentId, Student student, Course course,
+        boolean isComplete) {
         Enrollment enrollment = EnrollmentFixture.create(enrollmentId, student, course, isComplete);
         EnrollmentFixture.saveEnrollment(jdbcTemplate, enrollment);
         return enrollment;
