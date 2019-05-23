@@ -213,21 +213,8 @@ public class StudentEnrollmentServiceTest {
 
     fixture.showRecords("enrollment");
 
-    verifyStudentIsEnrolledInCourse(student, course);
-
   }
 
   /* ============================================================================= */
-
-  private void verifyStudentIsEnrolledInCourse(Student student, Course course) {
-
-    String query = "select count(*) from enrollment where student_id = :studentId and course_id = :courseId";
-    HashMap<String, Object> params = new HashMap<>();
-    params.put("studentId", student.getId());
-    params.put("courseId", course.getId());
-    Integer count = jdbcTemplate.queryForObject(query, params, Integer.class);
-
-    Assert.assertEquals(Integer.valueOf(1), count);
-  }
 
 }
