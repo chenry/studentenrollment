@@ -37,7 +37,9 @@ public class EnrollmentUseCaseTest {
     /**
      * Scenario: Unknown Student wants to enroll in a course
      *
-     * Given an unknown student When that student enrolls in the course Then an exception should be
+     * Given an unknown student
+     * When that student enrolls in the course
+     * Then an exception should be
      * thrown stating the student is unknown
      */
     @Test
@@ -56,8 +58,9 @@ public class EnrollmentUseCaseTest {
     /**
      * Scenario: Student with bad credit wants to enroll in a course
      *
-     * Given a student has bad credit When that student enrolls in the course Then they should not
-     * be able to enroll since they have bad credit
+     * Given a student has bad credit
+     * When that student enrolls in the course
+     * Then they should not be able to enroll since they have bad credit
      */
     @Test
     public void testEnrollStudentInCourse_StudentHasBadCredit() {
@@ -75,8 +78,10 @@ public class EnrollmentUseCaseTest {
     /**
      * Scenario: Student with bad credit wants to enroll in a course that doesn't exist
      *
-     * Given a student And the course does not exist When that student enrolls in the course Then
-     * they should not be able to enroll since the course does not exist
+     * Given a student
+     * And the course does not exist
+     * When that student enrolls in the course
+     * Then they should not be able to enroll since the course does not exist
      */
     @Test
     public void testEnrollStudentInCourse_CourseDoesNotExist() {
@@ -95,8 +100,10 @@ public class EnrollmentUseCaseTest {
     /**
      * Scenario: Student wants to enroll in a full course
      *
-     * Given a student with good credit And the course they want to enroll in is full When that
-     * student enrolls in the course Then they should not be allowed to enroll in the course
+     * Given a student with good credit
+     * And the course they want to enroll in is full
+     * When that student enrolls in the course
+     * Then they should not be allowed to enroll in the course
      */
     @Test
     public void testEnrollStudentInCourse_CourseIsFull() {
@@ -124,10 +131,12 @@ public class EnrollmentUseCaseTest {
     /**
      * Scenario: Student wants to enroll in a course, but does not have the prerequisites
      *
-     * Given a student with good credit And the course that they want to enroll in has openings And
-     * the course has two pre-requisite classes And the student has not fulfilled any of the
-     * prerequisites When that student enrolls in the course Then they should not be allowed to
-     * enroll in the course
+     * Given a student with good credit
+     * And the course that they want to enroll in has openings
+     * And the course has two pre-requisite classes
+     * And the student has not fulfilled any of the prerequisites
+     * When that student enrolls in the course
+     * Then they should not be allowed to enroll in the course
      */
     @Test
     public void testEnrollStudentInCourse_StudentDoesNotHavePrerequisites() {
@@ -150,10 +159,12 @@ public class EnrollmentUseCaseTest {
     /**
      * Scenario: Student wants to enroll in a course, but does not have the prerequisites
      *
-     * Given a student with good credit And the course that they want to enroll in has openings And
-     * the course has two pre-requisite classes And the student has only fulfilled one prerequisite
-     * When that student enrolls in the course Then they should not be allowed to enroll in the
-     * course
+     * Given a student with good credit
+     * And the course that they want to enroll in has openings
+     * And the course has two pre-requisite classes
+     * And the student has only fulfilled one prerequisite
+     * When that student enrolls in the course
+     * Then they should not be allowed to enroll in the course
      */
     @Test
     public void testEnrollStudentInCourse_StudentCompletedOneOfTwoPrerequisites() {
@@ -177,9 +188,12 @@ public class EnrollmentUseCaseTest {
     /**
      * Scenario: Happy Case
      *
-     * Given a student with good credit And the course that they want to enroll in has openings And
-     * the course has two pre-requisite classes And the student has fulfilled all prerequisites When
-     * that student enrolls in the course Then they should be allowed to enroll in the course
+     * Given a student with good credit
+     * And the course that they want to enroll in has openings
+     * And the course has two pre-requisite classes
+     * And the student has fulfilled all prerequisites
+     * When that student enrolls in the course
+     * Then they should be allowed to enroll in the course
      */
     @Test
     public void testEnrollStudentInCourse_HappyCase() {
