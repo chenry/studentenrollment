@@ -112,4 +112,17 @@ public class Fixture {
         return enrollment;
     }
 
+    public void deleteTableRecords() {
+        String[] tableNames = new String[] {
+            "enrollment",
+            "course_prerequisite",
+            "course",
+            "student"
+        };
+
+        for (String currTableName : tableNames) {
+            jdbcTemplate.update("delete from " + currTableName, new HashMap<>());
+        }
+
+    }
 }
