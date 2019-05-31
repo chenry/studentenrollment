@@ -1,3 +1,5 @@
+-- noinspection SqlNoDataSourceInspectionForFile
+
 create table student (
     ID BIGINT PRIMARY KEY,
     FIRST_NAME VARCHAR2,
