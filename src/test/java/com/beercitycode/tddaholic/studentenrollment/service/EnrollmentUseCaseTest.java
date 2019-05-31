@@ -11,8 +11,11 @@ import com.beercitycode.tddaholic.studentenrollment.fixtures.StudentFixture;
 import com.beercitycode.tddaholic.studentenrollment.model.Course;
 import com.beercitycode.tddaholic.studentenrollment.model.Student;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import javax.transaction.Transactional;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +25,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Transactional
 public class EnrollmentUseCaseTest {
 
     @Autowired
@@ -33,6 +35,11 @@ public class EnrollmentUseCaseTest {
 
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
+
+    @Before
+    public void setup() {
+        fixture.deleteTableRecords();
+    }
 
     /**
      * Scenario: Unknown Student wants to enroll in a course
@@ -213,8 +220,21 @@ public class EnrollmentUseCaseTest {
 
         fixture.showRecords("enrollment");
 
+        verifyStudentEnrolledInCourse(student, course);
     }
 
     /* ============================================================================= */
+
+    private void verifyStudentEnrolledInCourse(Student student, Course course) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("studentId", student.getId());
+        paramMap.put("courseId", course.getId());
+        paramMap.put("isCompleted", false);
+        Integer count = jdbcTemplate.queryForObject(
+            "select count(*) from enrollment where student_id = :studentId and course_id = :courseId and is_completed = :isCompleted",
+            paramMap, Integer.class);
+
+        Assert.assertEquals(Integer.valueOf(1), count);
+    }
 
 }
